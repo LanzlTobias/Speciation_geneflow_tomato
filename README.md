@@ -1,6 +1,7 @@
 # Speciation_geneflow_tomato
 
-For the SNP_call.sh following softwares and files are needed:
+SNP_call.sh:
+Following softwares and files are needed:
 -
 -
 -
