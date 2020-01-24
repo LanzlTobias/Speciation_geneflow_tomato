@@ -1,4 +1,7 @@
 ## Script for running the ABBA_BABA test
+#
+#
+## Arguments for the script:
 #First argument is the VCF file (gzipped or not)
 #Second argument is the file containing the paths to all poporder-files. Each path has to be given in a new line.
 #Example of a poporder-file is given as poporder.txt
@@ -12,10 +15,6 @@
 #countbadcolumns.pl available at: https://github.com/owensgl/pop_gen
 #Jackknife_ABBA_pipe.R available at: https://github.com/owensgl/abba_baba
 #ABBA_pvalue.R available at: https://github.com/owensgl/abba_baba
-
-
-#available at: https://github.com/owensgl/abba_baba
-
 
 FILE=${1%.gz}
 FILE=${file%.vcf}
