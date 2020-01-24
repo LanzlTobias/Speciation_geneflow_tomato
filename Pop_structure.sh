@@ -1,5 +1,6 @@
 #Script to prune SNPs for LD and then run a PCA with plink, ADMIXTURE, and TreeMix on them.
 #The transformation of the file for TreeMix was taken from https://speciationgenomics.github.io/Treemix/ 
+#The script plink2treemix.py is available at: https://bitbucket.org/nygcresearch/treemix/downloads/plink2treemix.py
 
 #First argument is the VCF file (gzipped or not)
 #Second argument is the cluster file required for TreeMix (Example file solanum.clust in the repo)
