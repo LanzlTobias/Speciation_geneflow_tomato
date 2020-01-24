@@ -43,7 +43,6 @@ awk '/CV/ {print $3,$4}' log*out | cut -c 4,7-20 > $FILE.cv.error
 plink --vcf $FILE.LDpruned.vcf.gz --allow-extra-chr --pca --out $FILE
 
 #Treemix
-./vcf2treemix.sh $FILE.vcf.gz solanum.clust
 ## Adjust the file to fit for treemix
 vcftools --gzvcf $FILE.LDpruned.vcf.gz --plink --mac 2 --remove-indels --max-alleles 2 --out $FILE
 awk -F"\t" '{
