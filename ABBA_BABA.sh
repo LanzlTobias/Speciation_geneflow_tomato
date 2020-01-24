@@ -62,17 +62,18 @@ done
 echo "############# Finished ABBA BABA #########"
 
 #Summarize the D and Z-score for all the combinations in Zscore.txt
-echo -e "Poporder_Nr\tCombination\tMean_D\tStd_D\tZ_score\tp_value" > header
+echo -e "Poporder_Nr\tCombination\tMean_D\tStd_D\tZ_score\tp_value" > Zscore.txt
 for (( i=1; i<=$END; i++ ))
 do
         echo "$i" > number
-cut -f1 ./poporder/Poporder_$i.txt | tr '\n' '\t' | sed 's/\t$//' | tr '\t' _ > combination
+        poporder=$(head -n $2 | tail -n)
+cut -f1 $poporder | tr '\n' '\t' | sed 's/\t$//' | tr '\t' _ > combination
 cut -f3-6 D_fd_Fhom_ANGSD_final_$i.txt | head -n1 > values
 paste number combination values >> sample
+
+cat sample >> Zscore.txt
+done
 rm combination
 rm values
 rm number
-done
-cat header sample > Zscore.txt
-rm header
 rm sample
