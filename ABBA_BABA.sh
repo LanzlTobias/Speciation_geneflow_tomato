@@ -1,3 +1,4 @@
+#!/bin/bash
 ## Script for running the ABBA_BABA test
 #
 #
