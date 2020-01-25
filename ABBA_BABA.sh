@@ -37,6 +37,8 @@ perl $script_dir/convertDoGeno2egglib.pl $FILE.geno > $FILE.geno.txt
 
 cat header.txt $FILE.geno.txt > $FILE"_WH.geno"
 
+rm $FILE.geno.txt $FILE.geno
+
 echo "############## Start ABBA BABA############"
 $END=$(cat $2 | wc -l)
 
