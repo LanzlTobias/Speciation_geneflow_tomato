@@ -5,8 +5,8 @@
 ## Arguments for the script:
 #First argument is the VCF file (gzipped or not)
 #Second argument is the file containing the paths to all poporder-files. Each path has to be given in a new line.
-#Example of a poporder-file is given as poporder.txt
-#Third argument is the populations.txt. Example is given as Population_file2.txt
+#Example of a poporder-file is given as pop_order.txt
+#Third argument is the populations.txt. Example is given as pop_file.txt
 #Fourth argument is optional. It is the path to the directory containing the scripts needed for the pipeline:
 #parseVCF.py available at: https://github.com/simonhmartin/genomics_general/tree/master/VCF_processing
 #ABBA_BABA.v1.pl available at: https://github.com/owensgl/abba_baba
