@@ -29,6 +29,9 @@ if [ -z "$3" ]
     script_dir=$3
 fi
 
+if test "$5" == "1"
+  then
+
 python $script_dir/parseVCF.py -i $FILE.vcf.gz > $FILE.geno
 
 sed -i 's/|//g' $FILE.geno
@@ -40,6 +43,7 @@ perl $script_dir/convertDoGeno2egglib.pl $FILE.geno > $FILE.geno.txt
 cat header.txt $FILE.geno.txt > $FILE"_WH.geno"
 
 rm $FILE.geno.txt $FILE.geno
+fi
 
 echo "############## Start ABBA BABA############"
 END=$(cat $2 | wc -l)
