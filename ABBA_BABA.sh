@@ -8,6 +8,8 @@
 #Example of a poporder-file is given as pop_order.txt
 #Third argument is the populations.txt. Example is given as pop_file.txt
 #Fourth argument is optional. It is the path to the directory containing the scripts needed for the pipeline:
+#Fifth argument is optional. It is the number on which poporder it should be started. For multi-threading.
+#Sixth argument is optional. It is the number on which poporder it should be started. For multi-threading.
 #parseVCF.py available at: https://github.com/simonhmartin/genomics_general/tree/master/VCF_processing
 #ABBA_BABA.v1.pl available at: https://github.com/owensgl/abba_baba
 #ABBA_out_blocker_5Mb.pl available at: https://github.com/owensgl/abba_baba
@@ -40,9 +42,24 @@ cat header.txt $FILE.geno.txt > $FILE"_WH.geno"
 rm $FILE.geno.txt $FILE.geno
 
 echo "############## Start ABBA BABA############"
-$END=$(cat $2 | wc -l)
+END=$(cat $2 | wc -l)
 
-for (( i=1; i<=$END; i++ ))
+if [ -z "$5" ]
+  then
+    START=1
+  else
+    START=$5
+fi
+
+if [ -z "$6" ]
+  then
+   END=$(cat $2 | wc -l)
+  else
+   END=$6
+fi
+    
+
+for (( i=$START; i<=$END; i++ ))
 do
 poporder=$(head -n $i $2 | tail -n 1)
         perl $script_dir/ABBA_BABA.v1.pl $FILE"_WH.geno" $3 $poporder > D_fd_Fhom_ANGSD_$i.txt
@@ -65,7 +82,7 @@ echo "############# Finished ABBA BABA #########"
 
 #Summarize the D and Z-score for all the combinations in Zscore.txt
 echo -e "Poporder_Nr\tCombination\tMean_D\tStd_D\tZ_score\tp_value" > Zscore.txt
-for (( i=1; i<=$END; i++ ))
+for (( i=$START; i<=$END; i++ ))
 do
         echo "$i" > number
         poporder=$(head -n $2 | tail -n)
@@ -73,7 +90,7 @@ cut -f1 $poporder | tr '\n' '\t' | sed 's/\t$//' | tr '\t' _ > combination
 cut -f3-6 D_fd_Fhom_ANGSD_final_$i.txt | head -n1 > values
 paste number combination values >> sample
 
-cat sample >> Zscore.txt
+cat sample >> Zscore_$START"_"$END.txt
 done
 rm combination
 rm values
