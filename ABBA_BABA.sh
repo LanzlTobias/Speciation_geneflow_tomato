@@ -7,9 +7,9 @@
 #Second argument is the file containing the paths to all poporder-files. Each path has to be given in a new line.
 #Example of a poporder-file is given as pop_order.txt
 #Third argument is the populations.txt. Example is given as pop_file.txt
-#Fourth argument is optional. It is the path to the directory containing the scripts needed for the pipeline:
-#Fifth argument is optional. It is the number on which poporder it should be started. For multi-threading.
-#Sixth argument is optional. It is the number on which poporder it should be started. For multi-threading.
+#Fourth argument is optional. It is the number on which poporder it should be started. For multi-threading.
+#Fifth argument is optional. It is the number on which poporder it should end. For multi-threading.
+#Sixth argument is optional. It is the path to the directory containing the scripts needed for the pipeline.
 #parseVCF.py available at: https://github.com/simonhmartin/genomics_general/tree/master/VCF_processing
 #ABBA_BABA.v1.pl available at: https://github.com/owensgl/abba_baba
 #ABBA_out_blocker_5Mb.pl available at: https://github.com/owensgl/abba_baba
