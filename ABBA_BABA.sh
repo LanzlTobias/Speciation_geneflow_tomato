@@ -44,7 +44,7 @@ $END=$(cat $2 | wc -l)
 
 for (( i=1; i<=$END; i++ ))
 do
-poporder=$(head -n $2 | tail -n)
+poporder=$(head -n $i $2 | tail -n 1)
         perl $script_dir/ABBA_BABA.v1.pl $FILE"_WH.geno" $3 $poporder > D_fd_Fhom_ANGSD_$i.txt
 
 perl $script_dir/ABBA_out_blocker_5Mb.pl D_fd_Fhom_ANGSD_$i.txt > D_fd_Fhom_ANGSD_block_$i.txt
