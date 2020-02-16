@@ -5,10 +5,34 @@
 #First argument is the file with the ABBA BABA counts per sites created with ABBA_BABA.v1.pl during the ABBA_BABA-pipeline
 #Second argument is the output prefix
 
-inputfile <- commandArgs(trailingOnly = TRUE)
+#Loading packages
+if(require("dplyr")){
+  print("dplyr is loaded correctly")
+} else {
+  print("trying to install dplyr")
+  install.packages("dplyr")
+  if(require("dplyr")){
+    print("dplyr installed and loaded")
+  } else {
+    stop("could not install dplyr")
+  }
+}
 
-library(data.table)
-library(dplyr)
+if(require("data.table")){
+  print("data.table is loaded correctly")
+} else {
+  print("trying to install data.table")
+  install.packages("data.table")
+  if(require("data.table")){
+    print("data.table installed and loaded")
+  } else {
+    stop("could not install data.table")
+  }
+}
+
+
+## Loading input
+inputfile <- commandArgs(trailingOnly = TRUE)
 data <- fread(inputfile[1],header=T,sep = "\t",fill=T)
 data <- data[-c(nrow(data),(nrow(data)-1),(nrow(data)-2)),]
 
