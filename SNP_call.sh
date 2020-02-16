@@ -54,6 +54,7 @@ do
         gunzip -c solanum.$i.filtered.vcf.gz | vcfallelicprimitives -k -g | gzip -c > filt6.vcf.gz
         #filt7
         vcftools --gzvcf filt6.vcf.gz --remove-indels --recode --recode-INFO-all --stdout | gzip -c > solanum.$i.goodVariants.vcf.gz
+	rm filt*
 done
 
 mv solanum.1.goodVariants.vcf.gz solanum.fb.snp.vcf.gz
@@ -62,3 +63,23 @@ do
 		zcat solanum.$i.goodVariants.vcf.gz | grep -v "^#" >> solanum.fb.snp.vcf.gz
 		rm solanum.$i.goodVariants.vcf.gz
 done
+
+## Performing a cutoff at different mean read depth for the three sample groups
+vcftools --gzvcf solanum.fb.snp.vcf.gz --keep chilense_pen.txt --max-meanDP 35 --recode --recode-INFO-all --stdout | bgzip -c > solanum.chilense_pen.dp.vcf.gz &
+vcftools --gzvcf solanum.fb.snp.vcf.gz --keep per_PI.txt --max-meanDP 15 --recode --recode-INFO-all --stdout | bgzip -c > solanum.per_PI.dp.vcf.gz &
+vcftools --gzvcf solanum.fb.snp.vcf.gz --keep per_LA.txt --max-meanDP 70 --recode --recode-INFO-all --stdout | bgzip -c > solanum.per_LA.dp.vcf.gz &
+
+bcftools index solanum.per_PI.dp.vcf.gz
+bcftools index solanum.per_LA.dp.vcf.gz
+bcftools index solanum.chilense_pen.dp.vcf.gz
+
+bcftools merge solanum.chilense_pen.dp.vcf.gz solanum.per_PI.dp.vcf.gz solanum.per_LA.dp.vcf.gz -m id -O v | gzip -c > solanum.fb.vcf.gz
+vcftools --gzvcf solanum.fb.vcf.gz --min-alleles 2 --max-alleles 2 --max-missing 0.9 --recode --recode-INFO-all --stdout | gzip -c > solanum.fb.dp.vcf.gz
+
+## Cleaning up temporary files
+rm solanum.per_PI.dp.vcf.gz*
+rm solanum.per_LA.dp.vcf.gz*
+rm solanum.chilense_pen.dp.vcf.gz*
+rm solanum.fb.vcf.gz
+rm solanum.fb.snp.vcf.gz
+
