@@ -1,13 +1,9 @@
 ## Modified version of FD_escaneo_por_ventanas_union_de_ventanas_graficarlas.R
 # available at: https://github.com/ericgonzalezs/Characterization_of_introgression_from_Zea_mays_ssp._mexicana_to_Mexican_highland_maize/blob/master/Introgression_analyses/
 #
-#Arguments for the script:
-#First argument is the file with the ABBA BABA counts per sites created with ABBA_BABA.v1.pl during the ABBA_BABA-pipeline
-#Second argument is the output prefix
-#Third argument is the number of informative ABBA BABA sites per window
-#Fourth argument is the quantile that should be taken (0.99 for the top 1 %)
+# For help run Rscript Fd_50_site_windows_v2.R --help
 
-#Loading packages
+## Loading packages
 
 if(require("optparse")){
   print("optparse is loaded correctly")
