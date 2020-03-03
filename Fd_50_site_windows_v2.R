@@ -62,7 +62,6 @@ if (is.na(opt$i)) {
 }
 
 ## Loading input
-inputfile <- commandArgs(trailingOnly = TRUE)
 data <- fread(opt$i,header=T,sep = "\t",fill=T)
 data <- data[-c(nrow(data),(nrow(data)-1),(nrow(data)-2)),]
 
