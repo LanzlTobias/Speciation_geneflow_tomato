@@ -8,6 +8,19 @@
 #Fourth argument is the quantile that should be taken (0.99 for the top 1 %)
 
 #Loading packages
+
+if(require("optparse")){
+  print("optparse is loaded correctly")
+} else {
+  print("trying to install optparse")
+  install.packages("optparse")
+  if(require("optparse")){
+    print("optparse installed and loaded")
+  } else {
+    stop("could not install optparse")
+  }
+}
+
 if(require("dplyr")){
   print("dplyr is loaded correctly")
 } else {
@@ -32,17 +45,36 @@ if(require("data.table")){
   }
 }
 
+## Define arguments
+
+option_list = list(
+  make_option(c("-i", "--input"), action="store", default=NA, type='character',
+              help="Input file with the ABBA BABA counts per sites created with ABBA_BABA.v1.pl during the ABBA_BABA-pipeline"),
+  make_option(c("-o", "--output"), action="store", default="output", type='character',
+              help="Output prefix, Default='output'"),
+  make_option(c("-n", "--number_sites"), action="store", default=50, type='integer',
+              help="Number of informative ABBA BABA sites per window, Default=50"),
+  make_option(c("-q", "--quantile"), action="store", default=0.99, type='character',
+              help="Quantile that should be taken for the unifified windows (0.99 for the top 1 %), Default=0.99"))
+
+## Reading in arguments
+
+opt = parse_args(OptionParser(option_list=option_list))
+
+if (is.na(opt$i)) {
+  stop("No input detected in --input")
+}
 
 ## Loading input
 inputfile <- commandArgs(trailingOnly = TRUE)
-data <- fread(inputfile[1],header=T,sep = "\t",fill=T)
+data <- fread(opt$i,header=T,sep = "\t",fill=T)
 data <- data[-c(nrow(data),(nrow(data)-1),(nrow(data)-2)),]
 
-n_sites <- inputfile[3]
+n_sites <- opt$n
 
 data <- data[,c(1,2,15:22)]
 
-Chr <- unique(Fs$CHR)
+Chr <- unique(data$CHR)
 
 ## Generating windows
 
@@ -79,12 +111,12 @@ table_without_filters <- rbindlist(chr_list)
 table_with_filters <- rbindlist(chr_list) %>%
   filter(D > 0, Fd >= 0 & Fd <= 1)
 
-fwrite(table_without_filters, file = paste0(inputfile[2],"_50_site_WindowsWithoutFiltering.csv"))
-fwrite(table_with_filters, file = paste0(inputfile[2],"_50_site_WindowsWithFiltering.csv"))
+fwrite(table_without_filters, file = paste0(opt$o,"_50_site_WindowsWithoutFiltering.csv"))
+fwrite(table_with_filters, file = paste0(opt$o,"_50_site_WindowsWithFiltering.csv"))
 
 ## Unification of windows
 
-quant <- input[4]
+quant <- opt$q
 
 unify_windows <- function(Chr,data,quant){
   table1 <- data %>%
@@ -126,5 +158,5 @@ uni_windows_list <- lapply(Chr,
 
 uni_windows <- rbindlist(uni_windows_list)
 
-fwrite(uni_windows, file = paste0(inputfile[2],"_50SNP_UnifiedWindows_",(1-quant),"percent.csv"))
+fwrite(uni_windows, file = paste0(opt$o,"_50SNP_UnifiedWindows_",(1-quant),"percent.csv"))
 
