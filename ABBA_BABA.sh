@@ -35,7 +35,7 @@ echo -e "Chromosome\tPosition" > tmp1
 
 bcftools query -l solanum.fb.dp.vcf.gz | tr "\n" "\t" > tmp2
 
-paste tmp1 tmp2
+paste tmp1 tmp2 > header.txt
 
 perl convertDoGeno2egglib.pl $FILE.geno > $FILE.geno.txt
 
