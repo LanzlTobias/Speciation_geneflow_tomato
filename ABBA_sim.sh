@@ -12,7 +12,7 @@
 # -x takes the fraction of Ne that H1 has
 
 
-while getopts m:d:u:t:p:n:v:o:c: option
+while getopts m:d:u:t:p:n:v:o:c:s:x: option
 do
 case "${option}"
 in
