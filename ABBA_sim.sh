@@ -5,7 +5,7 @@
 # -u takes a constant mutation rate
 # -p takes the number of repetition that should be performed per simulation scenario
 # -n takes the Ne 
-# -v takes the time at which the migration ended
+# -v takes the time at which the migration ends
 # -o takes the name of the 
 # -c takes a file with the chromosome names and lengths separated by tabs (one chromosome per line)
 
@@ -14,7 +14,7 @@ while getopts m:d:u:t:p:n:v:o:c: option
 do
 case "${option}"
 in
-m) migRate=${OPTARG};;
+m) migEnd=${OPTARG};;
 d) divTime=${OPTARG};;
 u) mu=${OPTARG};;
 p) rep=${OPTARG};;
@@ -39,9 +39,9 @@ divT1=$(echo -e $Ne"\t"$j | awk '{print ($2/5)/($1*4)}')   ## divergence time H2
 divT2=$(echo -e $Ne"\t"$j | awk '{print ($3/5)/($1*4)}')  ## divergence time H3 and H2
 divT3=$(echo -e $Ne"\t"$j | awk '{print ($4/5)/($1*4)}') ## divergence time H4 and H3
 
-migT=$(echo -e $Ne"\t"$migTime | awk '{print ($2/5)/($1*4)}')   ## migration time from H3 to H2
+migE=$(echo -e $Ne"\t"$migEnd | awk '{print ($2/5)/($1*4)}')   ## migration time from H3 to H2
 migR=$(echo $Ne"\t"$migRate | awk '{print $2*$1*4}')          ## migration rate from H3 to H2
-
+migStart=$(echo $divT1 | awk '{print $1-10}'
 
 while read p; do
 	name=$(echo $p | awk '{print $1}')
@@ -49,7 +49,7 @@ while read p; do
         theta=$(echo $Ne $mu $size | awk '{print $1*$2*$3*4}')
         rho=$theta
 /data/proj/teaching/NGS_course/Softwares/scrm 24 1 -t $theta -r $rho $size -I 4 2 2 10 10 \
-        -m 2 3 $migR -em $migT 2 3 0 \
+        -em $migStart 2 3 $migR -em $migE 2 3 0 \
         -ej $divT1 1 2 -ej $divT2 2 3 -ej $divT3 3 4
 
 done < $chromosome > $sim_name
