@@ -55,6 +55,7 @@ while read p; do
         rho=$theta
 /data/proj/teaching/NGS_course/Softwares/scrm 24 1 -t $theta -r $rho $size -I 4 2 2 10 10 \
         -m 2 3 0 -em $migT 2 3 $migR \
+	-en 0 2 $frac_h2 -en 0 1 $frac_h1 \
         -ej $divT1 1 2 \
         -ej $divT2 2 3 \
         -ej $divT3 3 4
