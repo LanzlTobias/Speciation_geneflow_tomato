@@ -6,7 +6,7 @@ pd.options.mode.chained_assignment = None
 # Reading in the arguments
 parser = parser.ArgumentParser(usage= 'This program searches for genomic regions with a higher differentiation than expected under neutrality between two diverged species. If other populations of one species are given a second filter can be applied to see that the regions do not differ within one species.')
 
-parser.add_argument('--input',action='store',help='Input file created with popgenWindows.py',required= True,metavar='Input')
+parser.add_argument('--input',action='store',help='Input file created with popgenWindows.py found at: https://github.com/simonhmartin/genomics_general',required= True,metavar='Input')
 parser.add_argument('--pop1',action='store',help='Name of the first population, which is genetically closest to the second population',required= True,metavar='pop1')
 parser.add_argument('--pop2',action='store',help='Name of the second population from the species to which the differentiation is measured',required= True,metavar='pop2')
 parser.add_argument('--pop3',action='store',help='Name of the third population, which is genetically distant to the second population and the same species as the first population',required= False,metavar='pop3')
