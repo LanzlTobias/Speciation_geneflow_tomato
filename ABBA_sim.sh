@@ -16,7 +16,7 @@ while getopts m:d:u:t:p:n:v:o:c: option
 do
 case "${option}"
 in
-m) migEnd=${OPTARG};;
+m) migRate=${OPTARG};;
 d) divTime=${OPTARG};;
 u) mu=${OPTARG};;
 p) rep=${OPTARG};;
@@ -43,11 +43,9 @@ divT1=$(echo -e $Ne"\t"$j | awk '{print ($2/5)/($1*4)}')   ## divergence time H2
 divT2=$(echo -e $Ne"\t"$j | awk '{print ($3/5)/($1*4)}')  ## divergence time H3 and H2
 divT3=$(echo -e $Ne"\t"$j | awk '{print ($4/5)/($1*4)}') ## divergence time H4 and H3
 
-migE=$(echo -e $Ne"\t"$migEnd | awk '{print ($2/5)/($1*4)}')   ## migration time from H3 to H2
+migT=$(echo -e $Ne"\t"$migTime | awk '{print ($2/5)/($1*4)}')   ## migration time from H3 to H2
 migR=$(echo $Ne"\t"$migRate | awk '{print $2*$1*4}')          ## migration rate from H3 to H2
-migStart=$(echo $divT1 | awk '{print $1-10}'
-divT1_1=$(echo $divT1 | awk '{print $1-5}'
-divT2_1=$(echo $divT2 | awk '{print $1-5}'
+
 
 
 while read p; do
@@ -56,10 +54,11 @@ while read p; do
         theta=$(echo $Ne $mu $size | awk '{print $1*$2*$3*4}')
         rho=$theta
 /data/proj/teaching/NGS_course/Softwares/scrm 24 1 -t $theta -r $rho $size -I 4 2 2 10 10 \
-        -em $migE 2 3 0 -em $migStart 2 3 $migR \
-        -en $divT1_1 1 $frac_h1 -ej $divT1 1 2 \
-	-en $divT2_1 1 $frac_h2 -ej $divT2 2 3 \
-	-ej $divT3 3 4
+        -m 2 3 0 -em $migT 2 3 $migR \
+        -ej $divT1 1 2 \
+        -ej $divT2 2 3 \
+        -ej $divT3 3 4
+
 
 done < $chromosome > $sim_name
 
