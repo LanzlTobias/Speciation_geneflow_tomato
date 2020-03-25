@@ -8,6 +8,8 @@
 # -v takes the time at which the migration ends
 # -o takes the name of the 
 # -c takes a file with the chromosome names and lengths separated by tabs (one chromosome per line)
+# -s takes the fraction of Ne that H2 has
+# -x takes the fraction of Ne that H1 has
 
 
 while getopts m:d:u:t:p:n:v:o:c: option
@@ -22,6 +24,8 @@ n) Ne=${OPTARG};;
 v) migTime=${OPTARG};;
 o) output=${OPTARG};;
 c) chromosome=${OPTARG};;
+s) frac_h2=${OPTARG};;
+x) frac_h1=${OPTARG};;
 esac
 done
 
@@ -42,6 +46,9 @@ divT3=$(echo -e $Ne"\t"$j | awk '{print ($4/5)/($1*4)}') ## divergence time H4 a
 migE=$(echo -e $Ne"\t"$migEnd | awk '{print ($2/5)/($1*4)}')   ## migration time from H3 to H2
 migR=$(echo $Ne"\t"$migRate | awk '{print $2*$1*4}')          ## migration rate from H3 to H2
 migStart=$(echo $divT1 | awk '{print $1-10}'
+divT1_1=$(echo $divT1 | awk '{print $1-5}'
+divT2_1=$(echo $divT2 | awk '{print $1-5}'
+
 
 while read p; do
 	name=$(echo $p | awk '{print $1}')
@@ -49,8 +56,10 @@ while read p; do
         theta=$(echo $Ne $mu $size | awk '{print $1*$2*$3*4}')
         rho=$theta
 /data/proj/teaching/NGS_course/Softwares/scrm 24 1 -t $theta -r $rho $size -I 4 2 2 10 10 \
-        -em $migStart 2 3 $migR -em $migE 2 3 0 \
-        -ej $divT1 1 2 -ej $divT2 2 3 -ej $divT3 3 4
+        -em $migE 2 3 0 -em $migStart 2 3 $migR \
+        -en $divT1_1 1 $frac_h1 -ej $divT1 1 2 \
+	-en $divT2_1 1 $frac_h2 -ej $divT2 2 3 \
+	-ej $divT3 3 4
 
 done < $chromosome > $sim_name
 
