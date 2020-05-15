@@ -63,7 +63,7 @@ option_list = list(
   make_option(c("-n", "--number_sites"), action="store", default=50, type='integer',
               help="Number of informative ABBA BABA sites per window, Default=50"),
   make_option(c("-q", "--quantile"), action="store", default=0.99, type='float',
-              help="Quantile that should be taken for the unifified windows (0.99 for the top 1 %), Default=0.99"),
+              help="Quantile that should be taken for the unified windows (0.99 for the top 1 %), Default=0.99"),
   make_option(c("-t", "--threads"), action="store", default=1, type='integer',
               help="Number of threads that should be used, Default=1"))
 
