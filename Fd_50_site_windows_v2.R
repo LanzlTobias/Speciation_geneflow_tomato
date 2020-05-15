@@ -17,6 +17,18 @@ if(require("optparse")){
   }
 }
 
+if(require("parallel")){
+  print("parallel is loaded correctly")
+} else {
+  print("trying to install parallel")
+  install.packages("parallel")
+  if(require("parallel")){
+    print("parallel installed and loaded")
+  } else {
+    stop("could not install parallel")
+  }
+}
+
 if(require("dplyr")){
   print("dplyr is loaded correctly")
 } else {
@@ -51,7 +63,9 @@ option_list = list(
   make_option(c("-n", "--number_sites"), action="store", default=50, type='integer',
               help="Number of informative ABBA BABA sites per window, Default=50"),
   make_option(c("-q", "--quantile"), action="store", default=0.99, type='float',
-              help="Quantile that should be taken for the unifified windows (0.99 for the top 1 %), Default=0.99"))
+              help="Quantile that should be taken for the unifified windows (0.99 for the top 1 %), Default=0.99"),
+  make_option(c("-t", "--threads"), action="store", default=1, type='integer',
+              help="Number of threads that should be used, Default=1"))
 
 ## Reading in arguments
 
@@ -97,10 +111,13 @@ generate_windows <- function(Chr,n_sites,data){
   table1
 }
 
-chr_list <- lapply(Chr,
+cl <- makeCluster(opt$t)
+chr_list <- clusterApply(cl,
+                         Chr,
                    generate_windows,
                    n_sites,
                    data)
+stopCluster(cl)
 
 table_without_filters <- rbindlist(chr_list)
 table_with_filters <- rbindlist(chr_list) %>%
@@ -146,10 +163,13 @@ unify_windows <- function(Chr,data,quant){
   unified_windows
 }
 
-uni_windows_list <- lapply(Chr,
+cl <- makeCluster(opt$t)
+uni_windows_list <- clusterApply(cl,
+                                 Chr,
                            unify_windows,
                            table_with_filters,
                            quant)
+stopCluster(cl)
 
 uni_windows <- rbindlist(uni_windows_list)
 
